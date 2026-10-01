@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapa de BSI</title>
+<meta name="description" content="Mapa mental das áreas, disciplinas e carreiras do Bacharelado em Sistemas de Informação do IFMG campus Ouro Branco, feito para quem está no ensino médio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Patrick+Hand&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --papel: #fbf6ec;
+    --linha-papel: #e9dfcb;
+    --tinta: #2f2a25;
+    --tinta-suave: #6b6157;
+    --caneta: #2b59c3;
+    --marca-texto: #ffe066;
+    --cartao: #fffdf8;
+    --sombra: 3px 4px 0 rgba(47, 42, 37, .14);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background-color: var(--papel);
+    background-image:
+      radial-gradient(circle at 1px 1px, var(--linha-papel) 1.2px, transparent 0);
+    background-size: 22px 22px;
+    color: var(--tinta);
+    font-family: "Nunito", system-ui, sans-serif;
+    line-height: 1.55;
+  }
+  .mao { font-family: "Caveat", cursive; }
+  .conteudo { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+
+  /* ---------- Cabeçalho ---------- */
+  header { padding: 36px 0 8px; }
+  h1 {
+    font-family: "Caveat", cursive;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    line-height: 1;
+    margin: 0 0 6px;
+  }
+  h1 .destaque {
+    background: linear-gradient(transparent 55%, var(--marca-texto) 55%, var(--marca-texto) 88%, transparent 88%);
+    padding: 0 6px;
+  }
+  .subtitulo { font-family: "Patrick Hand", cursive; font-size: 1.25rem; color: var(--tinta-suave); margin: 0 0 22px; }
+
+  .abertura {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 22px;
+    align-items: start;
+  }
+  .bilhete {
+    background: #fff8c9;
+    padding: 20px 22px 18px;
+    box-shadow: var(--sombra);
+    transform: rotate(-.6deg);
+    position: relative;
+    font-size: 1.02rem;
+  }
+  .bilhete::before {
+    content: "";
+    position: absolute;
+    top: -12px; left: 50%;
+    width: 110px; height: 26px;
+    transform: translateX(-50%) rotate(2deg);
+    background: rgba(255, 255, 255, .6);
+    border: 1px solid rgba(0, 0, 0, .05);
+  }
+  .bilhete p { margin: 0 0 10px; }
+  .bilhete p:last-child { margin: 0; }
+  .bilhete .assinatura { font-family: "Caveat", cursive; font-size: 1.5rem; text-align: right; color: var(--caneta); }
+
+  .fatos {
+    list-style: none;
+    margin: 0; padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .fatos li {
+    background: var(--cartao);
+    border: 2px solid var(--tinta);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    padding: 10px 12px;
+    font-family: "Patrick Hand", cursive;
+    font-size: 1.02rem;
+    line-height: 1.2;
+  }
+  .fatos li b { display: block; font-family: "Caveat", cursive; font-size: 1.7rem; line-height: 1; }
+  .fatos li:nth-child(odd) { transform: rotate(.7deg); }
+  .fatos li:nth-child(even) { transform: rotate(-.8deg); }
+
+  /* ---------- Seções ---------- */
+  section { margin-top: 34px; }
+  h2 {
+    font-family: "Caveat", cursive;
+    font-size: clamp(1.9rem, 4vw, 2.5rem);
+    margin: 0 0 4px;
+    line-height: 1.1;
+  }
+  h2 .numero {
+    display: inline-grid; place-items: center;
+    width: 1.3em; height: 1.3em;
+    border: 2.5px solid var(--tinta);
+    border-radius: 50% 45% 55% 48%;
+    font-size: .8em;
+    margin-right: 6px;
+    vertical-align: .08em;
+  }
+  .dica { font-family: "Patrick Hand", cursive; color: var(--tinta-suave); font-size: 1.12rem; margin: 0 0 14px; }
+
+  /* ---------- Roadmaps ---------- */
+  .roadmaps { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ficha {
+    font-family: "Patrick Hand", cursive;
+    font-size: 1.05rem;
+    background: var(--cartao);
+    color: var(--tinta);
+    border: 2px solid var(--tinta);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    padding: 5px 12px;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 rgba(47, 42, 37, .15);
+    transition: transform .15s, background .15s;
+  }
+  .ficha:hover { transform: translateY(-2px) rotate(-1deg); background: #fff3b0; }
+  .ficha.ativa { background: var(--marca-texto); transform: rotate(-1.5deg); }
+  .ficha:focus-visible, .no:focus-visible, .controles button:focus-visible { outline: 3px dashed var(--caneta); outline-offset: 3px; }
+
+  /* ---------- Mapa ---------- */
+  .area-mapa { position: relative; margin-top: 16px; }
+  .janela {
+    position: relative;
+    height: min(78vh, 820px);
+    min-height: 460px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, .45);
+    border: 2.5px solid var(--tinta);
+    border-radius: 18px 26px 16px 30px / 28px 14px 30px 18px;
+    box-shadow: var(--sombra);
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+  }
+  .janela.arrastando { cursor: grabbing; }
+  .mundo {
+    position: absolute; left: 0; top: 0;
+    transform-origin: 0 0;
+    transition: transform .7s cubic-bezier(.2, .8, .2, 1);
+  }
+  .janela.arrastando .mundo, .mundo.instantaneo { transition: none; }
+  .mundo svg { position: absolute; left: 0; top: 0; overflow: visible; width: 1px; height: 1px; }
+  .mundo path { fill: none; stroke-linecap: round; transition: opacity .3s; }
+
+  .no {
+    position: absolute;
+    left: 0; top: 0;
+    font-family: "Patrick Hand", cursive;
+    color: var(--tinta);
+    border: 2px solid var(--tinta);
+    background: var(--cartao);
+    cursor: pointer;
+    text-align: center;
+    line-height: 1.12;
+    transition: opacity .3s, box-shadow .2s, filter .3s;
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    box-shadow: 2px 3px 0 rgba(47, 42, 37, .16);
+    padding: 6px 10px;
+    width: max-content;
+  }
+  .no:hover { box-shadow: 4px 5px 0 rgba(47, 42, 37, .22); }
+  .no.folha { font-size: 15px; max-width: 170px; }
+  .no.folha.optativa { border-style: dashed; background: #fffdf8; }
+  .no.folha .periodo {
+    display: inline-block;
+    font-size: 11.5px;
+    margin-left: 4px;
+    padding: 0 5px;
+    border-radius: 8px;
+    background: rgba(47, 42, 37, .09);
+    white-space: nowrap;
+  }
+  .no.area {
+    font-family: "Caveat", cursive;
+    font-weight: 700;
+    font-size: 25px;
+    max-width: 210px;
+    padding: 8px 14px 6px;
+    border-width: 2.5px;
+  }
+  .no.area .emoji { display: block; font-size: 24px; line-height: 1; }
+  .no.centro {
+    font-family: "Caveat", cursive;
+    font-weight: 700;
+    font-size: 32px;
+    width: 230px;
+    padding: 18px 16px;
+    background: var(--marca-texto);
+    border-width: 3px;
+    border-radius: 50% 44% 52% 46% / 48% 54% 44% 52%;
+  }
+  .no.centro small { display: block; font-family: "Patrick Hand", cursive; font-weight: 400; font-size: 16px; }
+
+  .mundo.apagado .no:not(.aceso) { opacity: .16; filter: grayscale(.6); }
+  .mundo.apagado path:not(.aceso) { opacity: .08; }
+  .no.aceso.folha { box-shadow: 0 0 0 4px rgba(255, 224, 102, .9), 3px 4px 0 rgba(47, 42, 37, .2); }
+
+  .rabisco {
+    position: absolute;
+    font-family: "Caveat", cursive;
+    font-size: 22px;
+    color: var(--caneta);
+    white-space: nowrap;
+    pointer-events: none;
+    transition: opacity .3s;
+  }
+  .mundo.apagado .rabisco { opacity: 0; }
+
+  .controles {
+    position: absolute;
+    left: 12px; bottom: 12px;
+    display: flex; gap: 6px;
+    z-index: 3;
+  }
+  .controles button {
+    font-family: "Patrick Hand", cursive;
+    font-size: 1.1rem;
+    min-width: 40px; height: 40px;
+    padding: 0 10px;
+    background: var(--cartao);
+    color: var(--tinta);
+    border: 2px solid var(--tinta);
+    border-radius: 12px 16px 10px 18px;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 rgba(47, 42, 37, .15);
+  }
+  .controles button:hover { background: #fff3b0; }
+  .aviso {
+    position: absolute; left: 14px; top: 10px; z-index: 3;
+    font-family: "Patrick Hand", cursive; color: var(--tinta-suave); font-size: 1rem;
+    pointer-events: none;
+  }
+
+  /* ---------- Cartão lateral ---------- */
+  .painel {
+    position: absolute;
+    right: 14px; top: 14px; bottom: 14px;
+    width: 340px;
+    overflow: auto;
+    background: var(--cartao);
+    border: 2.5px solid var(--tinta);
+    border-radius: 16px 22px 14px 24px / 22px 14px 24px 16px;
+    box-shadow: var(--sombra);
+    padding: 18px 18px 16px;
+    z-index: 4;
+    transform: rotate(.4deg);
+  }
+  .painel .fechar {
+    position: absolute; top: 8px; right: 10px;
+    font-family: "Caveat", cursive; font-size: 1.8rem; line-height: 1;
+    background: none; border: 0; cursor: pointer; color: var(--tinta-suave);
+  }
+  .painel h3 { font-family: "Caveat", cursive; font-size: 2rem; line-height: 1.05; margin: 0 26px 6px 0; }
+  .painel h4 {
+    font-family: "Caveat", cursive; font-size: 1.4rem; margin: 14px 0 4px; color: var(--caneta);
+  }
+  .painel p { margin: 0 0 8px; font-size: .97rem; }
+  .painel ul { margin: 0; padding-left: 0; list-style: none; }
+  .painel li { font-size: .95rem; margin: 3px 0; padding-left: 20px; position: relative; }
+  .painel li::before { content: "~"; position: absolute; left: 4px; color: var(--tinta-suave); font-weight: 800; }
+  .painel .quando { font-family: "Patrick Hand", cursive; color: var(--tinta-suave); font-size: .95rem; }
+  .etiqueta {
+    display: inline-block;
+    font-family: "Patrick Hand", cursive;
+    font-size: .95rem;
+    padding: 1px 9px;
+    margin: 0 4px 4px 0;
+    border: 1.5px solid var(--tinta);
+    border-radius: 10px 14px 9px 13px;
+    background: #fff;
+  }
+  button.etiqueta { cursor: pointer; color: var(--tinta); }
+  button.etiqueta:hover { background: #fff3b0; }
+  .carimbo {
+    display: inline-block;
+    font-family: "Caveat", cursive; font-size: 1.1rem; font-weight: 700;
+    color: #c0392b; border: 2px solid #c0392b; border-radius: 6px;
+    padding: 0 8px; transform: rotate(-4deg); margin-bottom: 6px;
+  }
+  .citacao {
+    font-family: "Patrick Hand", cursive; font-size: 1.12rem;
+    background: #fff8c9; padding: 8px 10px; border-radius: 4px; margin: 6px 0 8px;
+  }
+  .legenda { display: grid; gap: 6px; margin-top: 8px; font-size: .92rem; }
+  .legenda span.caixa {
+    display: inline-block; width: 34px; height: 18px; margin-right: 6px; vertical-align: middle;
+    border: 2px solid var(--tinta); border-radius: 12px 5px 10px 5px; background: #fff;
+  }
+  .legenda span.caixa.tracejada { border-style: dashed; }
+
+  /* ---------- Como o curso se divide ---------- */
+  .eixos { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; align-items: center; }
+  .barra {
+    display: flex; height: 54px;
+    border: 2.5px solid var(--tinta);
+    border-radius: 14px 20px 12px 22px;
+    overflow: hidden;
+    box-shadow: var(--sombra);
+  }
+  .barra div {
+    display: grid; place-items: center;
+    font-family: "Caveat", cursive; font-weight: 700; font-size: 1.35rem;
+    border-right: 2px solid var(--tinta);
+  }
+  .barra div:last-child { border-right: 0; }
+  .lista-eixos { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+  .lista-eixos li { font-size: .97rem; }
+  .lista-eixos i {
+    display: inline-block; width: 14px; height: 14px; border: 2px solid var(--tinta);
+    border-radius: 4px 6px 3px 5px; margin-right: 6px; vertical-align: -1px;
+  }
+
+  footer {
+    margin: 46px 0 30px;
+    padding-top: 16px;
+    border-top: 2px dashed var(--linha-papel);
+    color: var(--tinta-suave);
+    font-size: .92rem;
+  }
+  footer .mao { font-size: 1.5rem; color: var(--tinta); }
+
+  @media (max-width: 860px) {
+    .abertura, .eixos { grid-template-columns: 1fr; }
+    .painel {
+      position: static;
+      width: auto;
+      margin-top: 14px;
+      transform: none;
+      max-height: none;
+    }
+    .janela { height: 64vh; min-height: 380px; }
+    .aviso { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mundo, .ficha, html { transition: none; scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<header class="conteudo">
+  <h1>Pra onde <span class="destaque">Sistemas de Informação</span> pode te levar?</h1>
+  <p class="subtitulo">Um mapa mental do Bacharelado em Sistemas de Informação do IFMG, campus Ouro Branco.</p>
+
+  <div class="abertura">
+    <div class="bilhete">
+      <p>Oi! Se você está terminando o ensino médio e ficou curioso(a) com esse tal de <b>BSI</b>, este mapa é pra você.</p>
+      <p>Quando a gente olha a grade de um curso pela primeira vez, é só uma lista enorme de nomes estranhos. Aqui eu tentei desenhar o que ninguem mostra: <b>como as disciplinas se juntam em áreas</b> e <b>que profissões cada caminho pode formar</b>.</p>
+      <p>Escolha um roadmap (um caminho de carreira na tecnologia) e veja as matérias que te levam até ele acenderem no mapa. Ou clique numa disciplina pra saber em que período ela aparece e pra onde ela te leva. Tudo aqui foi tirado do PPC do curso (a versão de 2022).</p>
+      <p class="assinatura">Boa exploração! ✏️</p>
+    </div>
+    <ul class="fatos">
+      <li><b>8 semestres</b>de 4 anos (dá pra ir até 16)</li>
+      <li><b>Noturno</b>presencial, dá pra conciliar com trabalho</li>
+      <li><b>3.004 horas</b>no total, com 4 optativas a sua escolha</li>
+      <li><b>50 vagas</b>por ano, entrada por SISU, processo seletivo e transferência</li>
+      <li><b>Projeto Integrador</b>320 h de projetos práticos ao longo do curso</li>
+      <li><b>TCC</b>no 7º e 8º períodos, o seu trabalho final</li>
+    </ul>
+  </div>
+</header>
+
+<main class="conteudo">
+  <section id="caminhos">
+    <h2><span class="numero">1</span>Escolha um roadmap</h2>
+    <p class="dica">Não precisa decidir agora! Estes são caminhos de carreira na área de tecnologia. Clique em um e veja no mapa quais disciplinas do curso te preparam para ele.</p>
+    <div class="roadmaps" id="roadmaps"></div>
+  </section>
+
+  <section id="mapa">
+    <h2><span class="numero">2</span>O mapa do curso</h2>
+    <p class="dica">No centro está o curso. Em volta, as grandes áreas. Nas pontas, as disciplinas. Arraste pra passear, use a rodinha (ou os botões) pra aproximar.</p>
+    <div class="area-mapa">
+      <div class="janela" id="janela" aria-label="Mapa mental interativo das áreas e disciplinas">
+        <div class="aviso">arraste para mover · role para dar zoom</div>
+        <div class="mundo" id="mundo"><svg id="linhas" aria-hidden="true"></svg></div>
+        <div class="controles">
+          <button type="button" id="aproximar" aria-label="Aproximar">+</button>
+          <button type="button" id="afastar" aria-label="Afastar">−</button>
+          <button type="button" id="verTudo">ver tudo</button>
+        </div>
+      </div>
+      <aside class="painel" id="painel" aria-live="polite"></aside>
+    </div>
+  </section>
+
+  <section id="divisao">
+    <h2><span class="numero">3</span>Como o curso se divide</h2>
+    <p class="dica">O PPC separa a carga horária em seis eixos de formação. Repare que BSI não é só programação: tem bastante gestão e prática também.</p>
+    <div class="eixos">
+      <div class="barra" id="barra"></div>
+      <ul class="lista-eixos" id="listaEixos"></ul>
+    </div>
+  </section>
+</main>
+
+<footer class="conteudo">
+  <p class="mao">Feito à mão (e com muito café) para quem está pensando no futuro.</p>
+  <p><b>Desenvolvido por Gabriel Cezar Rodrigues</b></p>
+  <p>Fontes: Projeto Pedagógico do Curso de Bacharelado em Sistemas de Informação, IFMG campus Ouro Branco (outubro de 2022) e Matriz Curricular OBBGSIN 2022.1. Os roadmaps são caminhos de carreira da área de tecnologia. As áreas foram agrupadas por afinidade de conteúdo e as ligações entre disciplinas e roadmaps são sugestões de caminho: o curso te dá base para todos eles.</p>
+</footer>
+
+<script>
+/* =========================================================
+   Dados (baseados no PPC BSI 2022 e na matriz 2022.1)
+   ========================================================= */
+const AREAS = [
+  { id: "prog", nome: "Programação e Algoritmos", emoji: "💻", cor: "#FFD166", tinta: "#b8860b",
+    descricao: "É aqui que você aprende a conversar com o computador. Começa do zero, com lógica de programação, e vai até estruturas de dados e algoritmos eficientes. É a base de quase tudo no curso." },
+  { id: "eng", nome: "Engenharia de Software", emoji: "🏗️", cor: "#F8A978", tinta: "#c2581a",
+    descricao: "Programar sozinho é uma coisa. Construir um sistema grande, em equipe, que funcione por anos, é outra. Aqui entram requisitos, modelagem, testes, qualidade e gestão de projetos." },
+  { id: "apps", nome: "Web, Mobile e Interfaces", emoji: "📱", cor: "#FF9EBB", tinta: "#c2185b",
+    descricao: "A parte que as pessoas veem e tocam: sites, aplicativos e a experiência de quem usa. Também tem espaço para computação gráfica e jogos." },
+  { id: "dados", nome: "Banco de Dados e Informação", emoji: "🗄️", cor: "#7FC8F8", tinta: "#1f6fa8",
+    descricao: "Toda empresa vive de dados. Você aprende a guardar, organizar e consultar informação, e a transformar tudo isso em decisão." },
+  { id: "ia", nome: "Inteligência Artificial", emoji: "🤖", cor: "#C3A6FF", tinta: "#6a3fc9",
+    descricao: "Máquinas que aprendem, reconhecem imagens e tomam decisões. Tem uma disciplina obrigatória e optativas para quem quiser ir mais fundo." },
+  { id: "hard", nome: "O computador por dentro", emoji: "🔧", cor: "#B5C99A", tinta: "#5b7a2e",
+    descricao: "Como o computador funciona de verdade: circuitos, processador, memória e o sistema operacional que coordena tudo isso." },
+  { id: "redes", nome: "Redes e Sistemas Distribuídos", emoji: "🌐", cor: "#7EDCC4", tinta: "#138a6c",
+    descricao: "Como os computadores conversam entre si, da rede da sua casa até sistemas espalhados por vários servidores (a famosa nuvem)." },
+  { id: "mat", nome: "Matemática e Teoria", emoji: "📐", cor: "#E6C9A8", tinta: "#8a5a2b",
+    descricao: "Calma, não precisa ter medo! A matemática do curso dá suporte para programação, dados e IA. E o primeiro período começa com Pré-Cálculo justamente para nivelar a turma." },
+  { id: "gestao", nome: "Gestão e Negócios", emoji: "💼", cor: "#D9ED92", tinta: "#6b8e0e",
+    descricao: "É o lado \"Sistemas de Informação\" do curso: entender como uma empresa funciona, falar a língua dos gestores e aprender a abrir o seu próprio negócio. É isso que diferencia BSI de Ciência da Computação." },
+  { id: "humanas", nome: "Comunicação, Ética e Pesquisa", emoji: "📚", cor: "#CAD2E0", tinta: "#4a5a7a",
+    descricao: "Escrever bem, ler em inglês, agir com ética e aprender a pesquisar. Tudo isso desemboca no TCC, o seu trabalho de conclusão." }
+];
+
+// [id, nome, área, período (0 = optativa), carga horária]
+const DISCIPLINAS = [
+  ["ip", "Introdução à Programação", "prog", 1, 64],
+  ["aed1", "Algoritmos e Estrutura de Dados I", "prog", 2, 64],
+  ["poo1", "Programação Orientada a Objetos I", "prog", 2, 64],
+  ["aed2", "Algoritmos e Estrutura de Dados II", "prog", 3, 64],
+  ["poo2", "Programação Orientada a Objetos II", "prog", 4, 64],
+  ["paa", "Projeto e Análise de Algoritmos", "prog", 6, 64],
+  ["o_alg", "Tópicos Especiais em Algoritmos", "prog", 0, 64],
+
+  ["es1", "Engenharia de Software I", "eng", 3, 64],
+  ["es2", "Engenharia de Software II", "eng", 5, 64],
+  ["gp", "Gestão de Projetos", "eng", 7, 32],
+  ["qs", "Qualidade de Software", "eng", 8, 64],
+  ["o_gps", "Gerência de Projetos de Software", "eng", 0, 64],
+  ["o_taes", "Tópicos Avançados em Engenharia de Software", "eng", 0, 64],
+  ["o_teds", "Tópicos Especiais em Desenvolvimento de Software", "eng", 0, 64],
+  ["o_sgq", "Sistemas de Garantia de Qualidade", "eng", 0, 64],
+
+  ["web", "Programação WEB", "apps", 4, 64],
+  ["mob", "Programação para Dispositivos Móveis", "apps", 6, 64],
+  ["ihc", "Interface Humano-Computador", "apps", 7, 64],
+  ["o_cg", "Computação Gráfica", "apps", 0, 64],
+  ["o_jogos", "Tópicos em Desenvolvimento de Jogos Digitais", "apps", 0, 64],
+
+  ["bd1", "Banco de Dados I", "dados", 3, 64],
+  ["ggi", "Governança e Gestão da Informação", "dados", 5, 64],
+  ["sad", "Sistemas de Apoio à Decisão", "dados", 6, 64],
+  ["o_bd2", "Banco de Dados II", "dados", 0, 64],
+  ["o_tabd", "Tópicos Avançados em Banco de Dados", "dados", 0, 64],
+  ["o_min", "Mineração de Dados", "dados", 0, 64],
+  ["o_gc", "Gestão do Conhecimento", "dados", 0, 64],
+
+  ["ia", "Inteligência Artificial", "ia", 7, 64],
+  ["o_taia", "Tópicos Avançados em Inteligência Artificial", "ia", 0, 64],
+  ["o_pi", "Processamento de Imagens", "ia", 0, 64],
+  ["o_rob", "Tópicos Especiais em Robótica", "ia", 0, 64],
+
+  ["sdcc", "Sistemas Digitais e Circuitos Combinacionais", "hard", 2, 64],
+  ["aoc", "Arquitetura e Organização de Computadores", "hard", 3, 64],
+  ["so", "Sistemas Operacionais", "hard", 4, 64],
+  ["o_aut", "Tópicos Especiais em Automação", "hard", 0, 64],
+
+  ["redes1", "Redes de Computadores I", "redes", 5, 64],
+  ["sd", "Sistemas Distribuídos", "redes", 6, 64],
+  ["o_redes2", "Redes de Computadores II", "redes", 0, 64],
+  ["o_tscr", "Tópicos Especiais em Sistemas Computacionais e Redes", "redes", 0, 64],
+
+  ["prec", "Pré-Cálculo", "mat", 1, 64],
+  ["calc1", "Cálculo Diferencial e Integral I", "mat", 2, 64],
+  ["alga", "Álgebra Linear e Geometria Analítica", "mat", 4, 64],
+  ["md", "Matemática Discreta", "mat", 4, 64],
+  ["pe", "Probabilidade e Estatística", "mat", 5, 64],
+  ["o_cn", "Cálculo Numérico", "mat", 0, 64],
+  ["o_grafos", "Teoria dos Grafos", "mat", 0, 64],
+  ["o_lfa", "Linguagens Formais e Autômatos", "mat", 0, 64],
+
+  ["isi", "Introdução a Sistemas de Informação", "gestao", 1, 64],
+  ["adm", "Princípios da Administração I", "gestao", 1, 64],
+  ["cont", "Contabilidade", "gestao", 3, 64],
+  ["emp", "Empreendedorismo", "gestao", 8, 64],
+  ["o_af", "Administração Financeira I", "gestao", 0, 64],
+  ["o_ae", "Avaliação de Empresas", "gestao", 0, 64],
+  ["o_co", "Comportamento Organizacional", "gestao", 0, 64],
+  ["o_ce", "Consultoria Empresarial", "gestao", 0, 64],
+  ["o_gi", "Gestão da Inovação", "gestao", 0, 64],
+  ["o_rh", "Gestão de Recursos Humanos", "gestao", 0, 64],
+  ["o_gs", "Gestão de Serviços", "gestao", 0, 64],
+  ["o_ic", "Inteligência Competitiva", "gestao", 0, 32],
+  ["o_ga", "Gestão Ambiental", "gestao", 0, 64],
+  ["o_lr", "Logística Reversa", "gestao", 0, 32],
+  ["o_qvt", "Qualidade de Vida no Trabalho", "gestao", 0, 64],
+
+  ["etica", "Ética e Legislação", "humanas", 1, 32],
+  ["port1", "Português Instrumental I", "humanas", 1, 32],
+  ["ing1", "Inglês Instrumental I", "humanas", 2, 32],
+  ["mtp", "Métodos e Técnicas de Pesquisa", "humanas", 2, 32],
+  ["tcc1", "Trabalho de Conclusão de Curso I", "humanas", 7, 64],
+  ["tcc2", "Trabalho de Conclusão de Curso II", "humanas", 8, 64],
+  ["o_ing2", "Inglês Instrumental II", "humanas", 0, 32],
+  ["o_ingn1", "Inglês para Negócios I", "humanas", 0, 32],
+  ["o_ingn2", "Inglês para Negócios II", "humanas", 0, 32],
+  ["o_port2", "Português Instrumental II", "humanas", 0, 32],
+  ["o_libras", "Libras", "humanas", 0, 64],
+  ["o_ead", "Tópicos Avançados em Tecnologias de Educação à Distância", "humanas", 0, 64]
+].map(([id, nome, area, periodo, cargaHoraria]) => ({ id, nome, area, periodo, cargaHoraria, optativa: periodo === 0 }));
+
+const PRE_REQUISITOS = { calc1: "Pré-Cálculo", tcc2: "Trabalho de Conclusão de Curso I" };
+
+// Roadmaps de carreira da área de tecnologia.
+// ppc: como a função aparece escrita no PPC (quando aparece)
+const CARREIRAS = [
+  { id: "frontend", emoji: "🎨", nome: "Frontend", ppc: "Programador",
+    gosta: "Você curte ver o resultado na hora, mexer com cores e botões e deixar tudo bonito e fácil de usar.",
+    dia: "Transforma layouts em telas de verdade no navegador, cuidando de desempenho e acessibilidade.",
+    topicos: "como a internet funciona, HTML, CSS, JavaScript, Git, frameworks como React, acessibilidade e testes",
+    disciplinas: ["ip", "aed1", "poo1", "ing1", "es1", "web", "ihc", "o_cg", "o_teds"] },
+  { id: "backend", emoji: "⚙️", nome: "Backend", ppc: "Programador",
+    gosta: "Você prefere resolver o problema por trás das cortinas: regras, dados e lógica.",
+    dia: "Cria as APIs e serviços que alimentam sites e apps, conversa com bancos de dados e garante que o sistema aguente muitos acessos.",
+    topicos: "uma linguagem de servidor, Git, bancos relacionais e NoSQL, APIs, cache, segurança web, testes e escalabilidade",
+    disciplinas: ["ip", "aed1", "poo1", "aed2", "bd1", "es1", "poo2", "web", "so", "es2", "redes1", "sd", "o_bd2", "o_teds"] },
+  { id: "fullstack", emoji: "🧩", nome: "Full Stack", ppc: "Programador",
+    gosta: "Você quer entender o sistema inteiro, da tela até o banco de dados.",
+    dia: "Transita entre frontend e backend. É muito comum em startups e equipes pequenas.",
+    topicos: "HTML, CSS, JavaScript, Node.js, bancos de dados, APIs, Git, nuvem e entrega contínua",
+    disciplinas: ["ip", "aed1", "poo1", "aed2", "bd1", "es1", "poo2", "web", "es2", "ihc", "o_bd2", "o_teds"] },
+  { id: "arquiteto", emoji: "🏛️", nome: "Software Architect", ppc: "Engenheiro de Software",
+    gosta: "Você gosta de programar, mais também de pensar no desenho do sistema como um todo.",
+    dia: "Decide como as partes de um sistema grande se encaixam, escolhe tecnologias e orienta os times.",
+    topicos: "padrões de projeto, estilos de arquitetura, sistemas distribuídos, APIs, nuvem, segurança e liderança técnica",
+    disciplinas: ["ip", "aed2", "poo2", "bd1", "es1", "md", "es2", "redes1", "paa", "sd", "gp", "qs", "o_taes", "o_teds"] },
+  { id: "qa", emoji: "🔍", nome: "QA", ppc: "Analista de teste",
+    gosta: "Você é a pessoa que acha o erro que ninguém viu.",
+    dia: "Planeja e automatiza testes, investiga defeitos e garante que o software funcione antes de chegar ao cliente.",
+    topicos: "fundamentos de qualidade, testes manuais, testes automatizados de frontend e backend, testes de carga e segurança, integração contínua",
+    disciplinas: ["aed1", "poo1", "bd1", "es1", "web", "es2", "qs", "o_sgq", "o_taes"] },
+  { id: "fde", emoji: "🤝", nome: "Forward Deployed Engineer",
+    gosta: "Você gosta de programar, mas também de sair da bolha e resolver o problema direto com o cliente.",
+    dia: "Trabalha junto das empresas clientes, adaptando e integrando o produto (muitas vezes com IA) à realidade delas.",
+    topicos: "programação, integração de sistemas, APIs, dados, IA aplicada e comunicação com clientes",
+    disciplinas: ["ip", "isi", "adm", "poo1", "bd1", "es1", "web", "es2", "ia", "o_ce"] },
+  { id: "jogos", emoji: "🎮", nome: "Game Developer",
+    gosta: "Jogar não basta: você quer saber como o jogo é feito por dentro.",
+    dia: "Programa mecânicas, física, gráficos e o comportamento dos personagens. Usa muita matemática e algoritmos.",
+    topicos: "matemática para jogos, física, computação gráfica, motores de jogos e IA de jogos",
+    disciplinas: ["prec", "ip", "aed1", "poo1", "calc1", "aed2", "poo2", "alga", "paa", "ihc", "ia", "o_cg", "o_jogos", "o_grafos"] },
+  { id: "analistadados", emoji: "📉", nome: "Data Analyst",
+    gosta: "Você adora uma planilha bem feita e descobrir o que os números estão dizendo.",
+    dia: "Coleta, limpa e analisa dados para responder perguntas do dia a dia da empresa.",
+    topicos: "planilhas, SQL, estatística, Python ou R, visualização de dados e storytelling",
+    disciplinas: ["ip", "isi", "bd1", "pe", "ggi", "sad", "o_min", "o_ic"] },
+  { id: "engdados", emoji: "🚰", nome: "Data Engineer",
+    gosta: "Você curte construir a \"encanação\" que faz os dados chegarem certinho onde precisam.",
+    dia: "Monta fluxos que levam grandes volumes de dados de vários sistemas até onde eles serão analisados.",
+    topicos: "SQL, Python, modelagem, pipelines e ETL, data warehouse, processamento distribuído e nuvem",
+    disciplinas: ["ip", "aed2", "bd1", "so", "ggi", "redes1", "paa", "sd", "o_bd2", "o_tabd", "o_min"] },
+  { id: "ml", emoji: "🧠", nome: "Machine Learning",
+    gosta: "Você quer entender a matemática que faz uma máquina aprender.",
+    dia: "Desenvolve e treina modelos que reconhecem imagens, textos e padrões.",
+    topicos: "álgebra linear, cálculo, probabilidade, Python, aprendizado supervisionado e não supervisionado, redes neurais",
+    disciplinas: ["prec", "ip", "calc1", "aed2", "alga", "pe", "paa", "ia", "o_taia", "o_pi", "o_cn", "o_min"] },
+  { id: "engia", emoji: "✨", nome: "AI Engineer",
+    gosta: "Você quer construir produtos usando os modelos de IA que já existem.",
+    dia: "Integra modelos de linguagem e outras IAs em aplicações reais, como assistentes e buscas inteligentes.",
+    topicos: "APIs de modelos de IA, engenharia de prompt, embeddings, bancos vetoriais, RAG e agentes",
+    disciplinas: ["ip", "poo1", "bd1", "web", "es2", "pe", "sd", "ia", "o_taia"] },
+  { id: "devops", emoji: "☁️", nome: "DevOps",
+    gosta: "Você gosta de automatizar tudo que é repetitivo.",
+    dia: "Cuida da infraestrutura na nuvem, da entrega contínua de software e de manter os sistemas no ar.",
+    topicos: "Linux, redes, servidores, containers, Kubernetes, CI/CD, infraestrutura como código, nuvem e monitoramento",
+    disciplinas: ["aoc", "so", "web", "es2", "redes1", "sd", "qs", "o_redes2", "o_tscr"] },
+  { id: "ciber", emoji: "🛡️", nome: "Cyber Security",
+    gosta: "Você curte investigar, pensar como um invasor e proteger as pessoas.",
+    dia: "Protege sistemas e dados contra ataques, avalia riscos e ajuda a empresa a cumprir leis como a LGPD.",
+    topicos: "redes, sistemas operacionais, criptografia, ataques e defesas, resposta a incidentes e normas",
+    disciplinas: ["etica", "aoc", "bd1", "so", "md", "ggi", "redes1", "sd", "o_redes2", "o_tscr"] },
+  { id: "redes", emoji: "🌐", nome: "Network Engineer", ppc: "Administrador e gerente de redes de computadores",
+    gosta: "Você é quem arruma o Wi-Fi da família inteira.",
+    dia: "Planeja, configura e mantém redes, servidores e a conexão da empresa funcionando.",
+    topicos: "modelos OSI e TCP/IP, endereçamento IP, roteamento, switching, redes sem fio e segurança de redes",
+    disciplinas: ["sdcc", "aoc", "so", "redes1", "sd", "o_redes2", "o_tscr"] },
+];
+
+const EIXOS = [
+  { nome: "Formação Complementar", porcentagem: 29, cor: "#D9ED92", texto: "optativas, Projeto Integrador e atividades complementares" },
+  { nome: "Tecnologia da Informação", porcentagem: 28, cor: "#7FC8F8", texto: "dados, engenharia de software, redes e sistemas" },
+  { nome: "Computacional", porcentagem: 21, cor: "#FFD166", texto: "programação e fundamentos da computação" },
+  { nome: "Matemática", porcentagem: 9, cor: "#E6C9A8", texto: "a base que sustenta o resto" },
+  { nome: "Administrativa", porcentagem: 7, cor: "#F8A978", texto: "administração, contabilidade e empreendedorismo" },
+  { nome: "Profissional e Social", porcentagem: 6, cor: "#FF9EBB", texto: "ética, pesquisa e TCC" }
+];
+
+/* =========================================================
+   Utilidades
+   ========================================================= */
+const selecionar = (seletor) => document.querySelector(seletor);
+const disciplinaPorId = Object.fromEntries(DISCIPLINAS.map((d) => [d.id, d]));
+const areaPorId = Object.fromEntries(AREAS.map((a) => [a.id, a]));
+const carreiraPorId = Object.fromEntries(CARREIRAS.map((c) => [c.id, c]));
+
+// gera sempre a mesma sequência "aleatória" para o mesmo texto, assim o mapa não muda a cada visita
+function aleatorioComSemente(texto) {
+  let h = 2166136261;
+  for (const letra of texto) h = Math.imul(h ^ letra.charCodeAt(0), 16777619);
+  return () => {
+    h += 0x6D2B79F5;
+    let t = h;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const escaparHtml = (texto) => texto.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+/* =========================================================
+   Montagem do mapa
+   ========================================================= */
+const mundo = selecionar("#mundo");
+const svgLinhas = selecionar("#linhas");
+const janela = selecionar("#janela");
+const nos = [];      // {id, elemento, x, y, largura, altura, fixo, tipo, rotacao}
+const noPorId = {};
+
+function adicionarNo(id, tipo, html, x, y, extra = {}) {
+  const elemento = document.createElement("button");
+  elemento.type = "button";
+  elemento.className = "no " + tipo + (extra.classe ? " " + extra.classe : "");
+  elemento.innerHTML = html;
+  elemento.dataset.codigo = id;
+  if (extra.fundo) elemento.style.background = extra.fundo;
+  if (extra.borda) elemento.style.borderColor = extra.borda;
+  mundo.appendChild(elemento);
+  const no = { id, elemento, x, y, largura: 0, altura: 0, fixo: !!extra.fixo, tipo, rotacao: extra.rotacao || 0 };
+  nos.push(no);
+  noPorId[id] = no;
+  return no;
+}
+
+// mistura a cor com o papel para o fundo ficar clarinho, mas sem transparência
+// (se o fundo fosse transparente, as linhas apareceriam por baixo das caixas)
+function clarear(corHex, quanto) {
+  const papel = [255, 253, 248];
+  const rgb = [1, 3, 5].map((i) => parseInt(corHex.slice(i, i + 2), 16));
+  return "rgb(" + rgb.map((c, i) => Math.round(c * quanto + papel[i] * (1 - quanto))).join(",") + ")";
+}
+
+function montarMapa() {
+  adicionarNo("centro", "centro", "Sistemas de Informação<small>IFMG Ouro Branco</small>", 0, 0, { fixo: true, rotacao: -2 });
+
+  AREAS.forEach((area) => {
+    const sorteio = aleatorioComSemente(area.id);
+    adicionarNo("A:" + area.id, "area", `<span class="emoji">${area.emoji}</span>${escaparHtml(area.nome)}`, 0, 0,
+      { fundo: area.cor, rotacao: (sorteio() - 0.5) * 4 });
+
+    DISCIPLINAS.filter((d) => d.area === area.id)
+      .sort((p, q) => (p.optativa - q.optativa) || (p.periodo - q.periodo))
+      .forEach((d) => {
+        adicionarNo(d.id, "folha",
+          `${escaparHtml(d.nome)}<span class="periodo">${d.optativa ? "opt" : d.periodo + "º"}</span>`, 0, 0,
+          { classe: d.optativa ? "optativa" : "", borda: area.tinta, rotacao: (sorteio() - 0.5) * 2.4,
+            fundo: d.optativa ? "#fffdf8" : clarear(area.cor, 0.35) });
+      });
+  });
+
+  // rabisco de apoio perto do centro
+  const rabisco = document.createElement("div");
+  rabisco.className = "rabisco";
+  rabisco.id = "rabisco";
+  rabisco.textContent = "comece por aqui ↓";
+  mundo.appendChild(rabisco);
+}
+
+function medirNos() {
+  nos.forEach((no) => {
+    no.largura = no.elemento.offsetWidth;
+    no.altura = no.elemento.offsetHeight;
+  });
+}
+
+// Layout de mapa mental: metade das áreas à direita do centro e metade à esquerda.
+// Cada área fica numa coluna e as suas disciplinas ficam empilhadas numa coluna
+// mais pra fora. Assim toda linha vai direto até a sua caixa sem passar por cima de outra.
+function organizarMapa() {
+  const ESPACO_FOLHAS = 8;       // entre uma disciplina e outra
+  const ESPACO_AREAS = 34;       // entre o grupo de uma área e o da próxima
+  const DISTANCIA_AREA = 110;    // do centro até a coluna das áreas
+  const DISTANCIA_FOLHAS = 80;   // da coluna das áreas até a coluna das disciplinas
+
+  const centro = noPorId["centro"];
+  const filhasDe = (area) => DISCIPLINAS.filter((d) => d.area === area.id).map((d) => noPorId[d.id]);
+  const alturaDoGrupo = (area) => {
+    const filhas = filhasDe(area);
+    const alturaFolhas = filhas.reduce((soma, no) => soma + no.altura, 0) + ESPACO_FOLHAS * (filhas.length - 1);
+    return Math.max(noPorId["A:" + area.id].altura, alturaFolhas);
+  };
+
+  // divide as áreas em dois lados com alturas parecidas, sem mudar a ordem
+  const alturas = AREAS.map(alturaDoGrupo);
+  const total = alturas.reduce((a, b) => a + b, 0);
+  let acumulado = 0, corte = 0;
+  while (corte < AREAS.length && acumulado + alturas[corte] / 2 < total / 2) acumulado += alturas[corte++];
+  const lados = [
+    { sinal: 1, areas: AREAS.slice(0, corte) },
+    { sinal: -1, areas: AREAS.slice(corte).reverse() } // invertido para as áreas vizinhas ficarem perto no círculo
+  ];
+
+  lados.forEach(({ sinal, areas }) => {
+    const larguraAreas = Math.max(...areas.map((a) => noPorId["A:" + a.id].largura));
+    const xArea = sinal * (centro.largura / 2 + DISTANCIA_AREA + larguraAreas / 2);
+    const bordaFolhas = sinal * (centro.largura / 2 + DISTANCIA_AREA + larguraAreas + DISTANCIA_FOLHAS);
+    const alturaLado = areas.reduce((soma, a) => soma + alturaDoGrupo(a), 0) + ESPACO_AREAS * (areas.length - 1);
+    let y = -alturaLado / 2;
+
+    areas.forEach((area) => {
+      const altura = alturaDoGrupo(area);
+      const noArea = noPorId["A:" + area.id];
+      noArea.x = xArea;
+      noArea.y = y + altura / 2;
+      noArea.lado = sinal;
+
+      const filhas = filhasDe(area);
+      const alturaFolhas = filhas.reduce((soma, no) => soma + no.altura, 0) + ESPACO_FOLHAS * (filhas.length - 1);
+      let yFolha = noArea.y - alturaFolhas / 2;
+      filhas.forEach((no) => {
+        no.x = bordaFolhas + sinal * no.largura / 2; // alinhadas pela borda de dentro
+        no.y = yFolha + no.altura / 2;
+        no.lado = sinal;
+        yFolha += no.altura + ESPACO_FOLHAS;
+      });
+      y += altura + ESPACO_AREAS;
+    });
+  });
+
+  const rabisco = selecionar("#rabisco");
+  rabisco.style.transform = `translate(-60px, ${-centro.altura / 2 - 42}px) rotate(-4deg)`;
+}
+
+function posicionarNos() {
+  nos.forEach((no) => {
+    no.elemento.style.transform = `translate(${no.x - no.largura / 2}px, ${no.y - no.altura / 2}px) rotate(${no.rotacao}deg)`;
+  });
+}
+
+// linha "à mão livre": curva que sai na horizontal e chega na horizontal,
+// com um tremidinho diferente para cada ligação
+function linhaAMao(x1, y1, x2, y2, semente) {
+  const sorteio = aleatorioComSemente(semente);
+  const puxada = (x2 - x1) * (0.45 + sorteio() * 0.15);
+  const tremida = () => (sorteio() - 0.5) * 6;
+  return `M${x1.toFixed(1)},${y1.toFixed(1)} ` +
+    `C${(x1 + puxada).toFixed(1)},${(y1 + tremida()).toFixed(1)} ` +
+    `${(x2 - puxada).toFixed(1)},${(y2 + tremida()).toFixed(1)} ` +
+    `${x2.toFixed(1)},${y2.toFixed(1)}`;
+}
+
+const linhasPorNo = {}; // id do nó da ponta -> [caminhos svg]
+function desenharLinhas() {
+  svgLinhas.innerHTML = "";
+  const centro = noPorId["centro"];
+  const criarLinha = (d, cor, espessura, opacidade, chave) => {
+    const caminho = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    caminho.setAttribute("d", d);
+    caminho.setAttribute("stroke", cor);
+    caminho.setAttribute("stroke-width", espessura);
+    caminho.setAttribute("opacity", opacidade);
+    svgLinhas.appendChild(caminho);
+    (linhasPorNo[chave] = linhasPorNo[chave] || []).push(caminho);
+    return caminho;
+  };
+  // ponto na lateral da caixa, do lado que olha para o centro (-1) ou para fora (+1)
+  const lateral = (no, paraFora) => no.x + no.lado * paraFora * (no.largura / 2 - 4);
+
+  AREAS.forEach((area) => {
+    const noArea = noPorId["A:" + area.id];
+    const saidaCentro = centro.x + noArea.lado * (centro.largura / 2 - 18);
+    const chegadaArea = lateral(noArea, -1);
+    criarLinha(linhaAMao(saidaCentro, centro.y, chegadaArea, noArea.y, area.id), area.tinta, 6, 0.85, "A:" + area.id);
+    // segundo traço bem clarinho, como quando a gente passa a caneta duas vezes
+    criarLinha(linhaAMao(saidaCentro, centro.y + 3, chegadaArea, noArea.y + 2, area.id + "b"), area.tinta, 2, 0.35, "A:" + area.id);
+
+    DISCIPLINAS.filter((d) => d.area === area.id).forEach((d) => {
+      const noDisc = noPorId[d.id];
+      const linha = criarLinha(linhaAMao(lateral(noArea, 1), noArea.y, lateral(noDisc, -1), noDisc.y, d.id),
+        area.tinta, d.optativa ? 1.8 : 2.6, d.optativa ? 0.6 : 0.8, d.id);
+      if (d.optativa) linha.setAttribute("stroke-dasharray", "5 6");
+    });
+  });
+}
+
+/* =========================================================
+   Zoom e arrasto
+   ========================================================= */
+const visao = { x: 0, y: 0, escala: 1 };
+function aplicarVisao() {
+  mundo.style.transform = `translate(${visao.x}px, ${visao.y}px) scale(${visao.escala})`;
+}
+function painelSobrepoe() {
+  return getComputedStyle(selecionar("#painel")).position === "absolute";
+}
+function enquadrar(lista, escalaMaxima = 1.15) {
+  const larguraUtil = janela.clientWidth - (painelSobrepoe() ? 370 : 0);
+  const alturaUtil = janela.clientHeight;
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  lista.forEach((no) => {
+    x0 = Math.min(x0, no.x - no.largura / 2); x1 = Math.max(x1, no.x + no.largura / 2);
+    y0 = Math.min(y0, no.y - no.altura / 2); y1 = Math.max(y1, no.y + no.altura / 2);
+  });
+  const margem = 30;
+  const espacoBotoes = 50; // os botões de zoom ficam no canto de baixo
+  const escala = Math.min(escalaMaxima, (larguraUtil - margem * 2) / (x1 - x0), (alturaUtil - margem * 2 - espacoBotoes) / (y1 - y0));
+  visao.escala = escala;
+  visao.x = larguraUtil / 2 - ((x0 + x1) / 2) * escala;
+  visao.y = (alturaUtil - espacoBotoes) / 2 - ((y0 + y1) / 2) * escala;
+  aplicarVisao();
+}
+function aproximarEm(fator, cx, cy) {
+  const novaEscala = Math.min(2.5, Math.max(0.2, visao.escala * fator));
+  visao.x = cx - (cx - visao.x) * (novaEscala / visao.escala);
+  visao.y = cy - (cy - visao.y) * (novaEscala / visao.escala);
+  visao.escala = novaEscala;
+  aplicarVisao();
+}
+
+let arrastou = false;
+(function configurarArrasto() {
+  const dedos = new Map();
+  let ultimo = null, pinca = null;
+  janela.addEventListener("pointerdown", (e) => {
+    if (e.target.closest(".controles")) return;
+    dedos.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    arrastou = false;
+    ultimo = { x: e.clientX, y: e.clientY };
+    if (dedos.size === 2) {
+      const [p, q] = [...dedos.values()];
+      pinca = { distancia: Math.hypot(p.x - q.x, p.y - q.y) };
+    }
+  });
+  window.addEventListener("pointermove", (e) => {
+    if (!dedos.has(e.pointerId)) return;
+    dedos.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (dedos.size === 2 && pinca) {
+      const [p, q] = [...dedos.values()];
+      const distancia = Math.hypot(p.x - q.x, p.y - q.y);
+      const caixa = janela.getBoundingClientRect();
+      aproximarEm(distancia / pinca.distancia, (p.x + q.x) / 2 - caixa.left, (p.y + q.y) / 2 - caixa.top);
+      pinca.distancia = distancia;
+      arrastou = true;
+      return;
+    }
+    const dx = e.clientX - ultimo.x, dy = e.clientY - ultimo.y;
+    if (!arrastou && Math.hypot(dx, dy) < 5) return;
+    if (!arrastou) { arrastou = true; janela.classList.add("arrastando"); }
+    visao.x += dx; visao.y += dy;
+    ultimo = { x: e.clientX, y: e.clientY };
+    aplicarVisao();
+  });
+  const soltar = (e) => {
+    dedos.delete(e.pointerId);
+    if (dedos.size < 2) pinca = null;
+    if (dedos.size === 1) ultimo = [...dedos.values()][0];
+    if (dedos.size === 0) janela.classList.remove("arrastando");
+  };
+  window.addEventListener("pointerup", soltar);
+  window.addEventListener("pointercancel", soltar);
+
+  let esperaRoda;
+  janela.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    const caixa = janela.getBoundingClientRect();
+    mundo.classList.add("instantaneo");
+    aproximarEm(Math.exp(-e.deltaY * 0.0015), e.clientX - caixa.left, e.clientY - caixa.top);
+    clearTimeout(esperaRoda);
+    esperaRoda = setTimeout(() => mundo.classList.remove("instantaneo"), 120);
+  }, { passive: false });
+
+  const meioDaJanela = () => [janela.clientWidth / 2, janela.clientHeight / 2];
+  selecionar("#aproximar").onclick = () => aproximarEm(1.3, ...meioDaJanela());
+  selecionar("#afastar").onclick = () => aproximarEm(1 / 1.3, ...meioDaJanela());
+  selecionar("#verTudo").onclick = () => recomecar(true);
+})();
+
+/* =========================================================
+   Destaques e cartões
+   ========================================================= */
+function acender(ids) {
+  Object.values(linhasPorNo).flat().forEach((linha) => linha.classList.remove("aceso"));
+  nos.forEach((no) => no.elemento.classList.remove("aceso"));
+  if (!ids) { mundo.classList.remove("apagado"); return; }
+  mundo.classList.add("apagado");
+  const acesos = new Set(ids);
+  acesos.add("centro");
+  ids.forEach((id) => { if (disciplinaPorId[id]) acesos.add("A:" + disciplinaPorId[id].area); });
+  acesos.forEach((id) => {
+    if (noPorId[id]) noPorId[id].elemento.classList.add("aceso");
+    (linhasPorNo[id] || []).forEach((linha) => linha.classList.add("aceso"));
+  });
+}
+
+function carreirasDaDisciplina(idDisciplina) {
+  return CARREIRAS.filter((c) => c.disciplinas.includes(idDisciplina));
+}
+function etiquetaDisciplina(d) {
+  return `<button class="etiqueta" data-ir="${d.id}" type="button">${escaparHtml(d.nome)}</button>`;
+}
+function etiquetaCarreira(c) {
+  return `<button class="etiqueta" data-carreira="${c.id}" type="button">${c.emoji} ${escaparHtml(c.nome)}</button>`;
+}
+
+const painel = selecionar("#painel");
+function mostrarCartao(html) {
+  painel.innerHTML = `<button class="fechar" type="button" aria-label="Fechar e voltar ao início">×</button>` + html;
+  painel.scrollTop = 0;
+}
+
+function cartaoBoasVindas() {
+  mostrarCartao(`
+    <h3>Como ler este mapa</h3>
+    <p>Pensa numa árvore: no meio está o curso, os galhos grossos são as <b>áreas</b> e as folhas são as <b>disciplinas</b>.</p>
+    <div class="legenda">
+      <div><span class="caixa" style="background:#FFD16655"></span>disciplina obrigatória (o número é o período)</div>
+      <div><span class="caixa tracejada"></span>optativa: você escolhe 4 ao longo do curso</div>
+    </div>
+    <h4>Experimente</h4>
+    <ul>
+      <li>clicar numa <b>área</b> pra ver o que ela estuda e em que roadmaps ela ajuda;</li>
+      <li>clicar numa <b>disciplina</b> pra ver quando ela aparece e pra onde ela leva;</li>
+      <li>escolher um <b>roadmap</b> lá em cima e ver o caminho acender.</li>
+    </ul>
+    <h4>Um segredo</h4>
+    <p>Todo mundo passa pelas mesmas obrigatórias. O que muda o seu caminho são as <b>optativas</b>, o <b>Projeto Integrador</b>, o <b>TCC</b> e os estágios que você buscar.</p>
+  `);
+}
+
+function cartaoArea(area) {
+  const filhas = DISCIPLINAS.filter((d) => d.area === area.id);
+  const obrigatorias = filhas.filter((d) => !d.optativa).sort((p, q) => p.periodo - q.periodo);
+  const optativas = filhas.filter((d) => d.optativa);
+  const relacionadas = CARREIRAS
+    .map((c) => ({ carreira: c, quantas: c.disciplinas.filter((id) => disciplinaPorId[id].area === area.id).length }))
+    .filter((x) => x.quantas >= 2)
+    .sort((p, q) => q.quantas - p.quantas);
+  mostrarCartao(`
+    <h3>${area.emoji} ${escaparHtml(area.nome)}</h3>
+    <p>${area.descricao}</p>
+    <h4>Obrigatórias</h4>
+    <ul>${obrigatorias.map((d) => `<li>${escaparHtml(d.nome)} <span class="quando">(${d.periodo}º período, ${d.cargaHoraria} h)</span></li>`).join("")}</ul>
+    ${optativas.length ? `<h4>Optativas pra ir além</h4><div>${optativas.map(etiquetaDisciplina).join("")}</div>` : ""}
+    ${relacionadas.length ? `<h4>Roadmaps que usam muito esta área</h4><div>${relacionadas.map((x) => etiquetaCarreira(x.carreira)).join("")}</div>` : ""}
+  `);
+  const ids = filhas.map((d) => d.id).concat("A:" + area.id);
+  acender(ids);
+  focarEm(ids);
+}
+
+function cartaoDisciplina(d) {
+  const area = areaPorId[d.area];
+  const carreiras = carreirasDaDisciplina(d.id);
+  mostrarCartao(`
+    <h3>${escaparHtml(d.nome)}</h3>
+    <p><span class="etiqueta" style="background:${area.cor}">${area.emoji} ${escaparHtml(area.nome)}</span></p>
+    <p><b>${d.optativa ? "Optativa" : "Obrigatória"}</b>${d.optativa ? ", você escolhe se quer cursar" : ", no " + d.periodo + "º período"} · ${d.cargaHoraria} horas${PRE_REQUISITOS[d.id] ? `<br>Pré-requisito: ${PRE_REQUISITOS[d.id]}` : ""}</p>
+    ${carreiras.length
+      ? `<h4>Leva você para</h4><div>${carreiras.map(etiquetaCarreira).join("")}</div>`
+      : `<h4>Leva você para</h4><p>Não é o foco de nenhum roadmap específico, mas ajuda a formar um profissional mais completo, e isso conta muito.</p>`}
+    <p class="quando" style="margin-top:12px">Clique num roadmap pra ver o caminho inteiro.</p>
+  `);
+  acender([d.id]);
+}
+
+function cartaoCarreira(carreira) {
+  const lista = carreira.disciplinas.map((id) => disciplinaPorId[id]);
+  const obrigatorias = lista.filter((d) => !d.optativa).sort((p, q) => p.periodo - q.periodo);
+  const optativas = lista.filter((d) => d.optativa);
+  const porPeriodo = {};
+  obrigatorias.forEach((d) => (porPeriodo[d.periodo] = porPeriodo[d.periodo] || []).push(d));
+  mostrarCartao(`
+    ${carreira.ppc ? `<span class="carimbo">citada no PPC: ${escaparHtml(carreira.ppc)}</span>` : ""}
+    <h3>${carreira.emoji} ${escaparHtml(carreira.nome)}</h3>
+    <div class="citacao">${escaparHtml(carreira.gosta)}</div>
+    <p><b>No dia a dia:</b> ${escaparHtml(carreira.dia)}</p>
+    <p><b>O que o roadmap cobre:</b> ${escaparHtml(carreira.topicos)}.</p>
+    <h4>Seu caminho no curso</h4>
+    <ul>${Object.keys(porPeriodo).map((p) => `<li><span class="quando">${p}º período:</span> ${porPeriodo[p].map((d) => escaparHtml(d.nome)).join(", ")}</li>`).join("")}</ul>
+    ${optativas.length ? `<h4>Optativas que dão um empurrão</h4><div>${optativas.map(etiquetaDisciplina).join("")}</div>` : ""}
+    <p class="quando" style="margin-top:12px">Lembre: isso é um caminho sugerido, não uma prisão. Muita gente muda de ideia no meio do curso, e tudo bem!</p>
+  `);
+  document.querySelectorAll(".ficha").forEach((f) => f.classList.toggle("ativa", f.dataset.carreira === carreira.id));
+  acender(carreira.disciplinas);
+  focarEm(carreira.disciplinas);
+}
+
+function focarEm(ids) {
+  const lista = ids.map((id) => noPorId[id]).filter(Boolean).concat(noPorId["centro"]);
+  enquadrar(lista, 1.05);
+}
+
+function recomecar(reenquadrar) {
+  acender(null);
+  document.querySelectorAll(".ficha").forEach((f) => f.classList.remove("ativa"));
+  cartaoBoasVindas();
+  if (reenquadrar) enquadrar(nos);
+}
+
+/* =========================================================
+   Eventos
+   ========================================================= */
+mundo.addEventListener("click", (e) => {
+  const elemento = e.target.closest(".no");
+  if (!elemento || arrastou) return;
+  const id = elemento.dataset.codigo;
+  document.querySelectorAll(".ficha").forEach((f) => f.classList.remove("ativa"));
+  if (id === "centro") return recomecar(true);
+  if (id.startsWith("A:")) return cartaoArea(areaPorId[id.slice(2)]);
+  cartaoDisciplina(disciplinaPorId[id]);
+});
+
+painel.addEventListener("click", (e) => {
+  if (e.target.closest(".fechar")) return recomecar(true);
+  const irPara = e.target.closest("[data-ir]");
+  if (irPara) {
+    const d = disciplinaPorId[irPara.dataset.ir];
+    cartaoDisciplina(d);
+    enquadrar([noPorId[d.id], noPorId["A:" + d.area]], 1.1);
+    return;
+  }
+  const botaoCarreira = e.target.closest("[data-carreira]");
+  if (botaoCarreira) cartaoCarreira(carreiraPorId[botaoCarreira.dataset.carreira]);
+});
+
+function montarCarreiras() {
+  const caixa = selecionar("#roadmaps");
+  caixa.innerHTML = CARREIRAS.map((c) =>
+    `<button type="button" class="ficha" data-carreira="${c.id}">${c.emoji} ${escaparHtml(c.nome)}</button>`).join("");
+  caixa.addEventListener("click", (e) => {
+    const ficha = e.target.closest(".ficha");
+    if (!ficha) return;
+    if (ficha.classList.contains("ativa")) return recomecar(true);
+    cartaoCarreira(carreiraPorId[ficha.dataset.carreira]);
+    selecionar("#mapa").scrollIntoView({ block: "start" });
+  });
+}
+
+function montarEixos() {
+  selecionar("#barra").innerHTML = EIXOS.map((eixo) =>
+    `<div style="flex:${eixo.porcentagem};background:${eixo.cor}" title="${eixo.nome}: ${eixo.porcentagem}%">${eixo.porcentagem >= 7 ? eixo.porcentagem + "%" : ""}</div>`).join("");
+  selecionar("#listaEixos").innerHTML = EIXOS.map((eixo) =>
+    `<li><i style="background:${eixo.cor}"></i><b>${eixo.nome} (${eixo.porcentagem}%)</b>: ${eixo.texto}</li>`).join("");
+}
+
+/* =========================================================
+   Início
+   ========================================================= */
+montarMapa();
+montarCarreiras();
+montarEixos();
+cartaoBoasVindas();
+// espera as fontes carregarem para medir o tamanho real de cada caixa
+(document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
+  medirNos();
+  organizarMapa();
+  posicionarNos();
+  desenharLinhas();
+  mundo.classList.add("instantaneo");
+  enquadrar(nos);
+  requestAnimationFrame(() => mundo.classList.remove("instantaneo"));
+});
+let esperaRedimensionar;
+window.addEventListener("resize", () => {
+  clearTimeout(esperaRedimensionar);
+  esperaRedimensionar = setTimeout(() => enquadrar(nos), 150);
+});
+</script>
+</body>
+</html>
